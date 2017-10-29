@@ -1,0 +1,85 @@
+SELECT * FROM publishers;
+SELECT COUNT(publID) FROM publishers;
+SELECT COUNT(DISTINCT publID) publishers;
+SELECT COUNT(*)/COUNT(DISTINCT publID) publishers;
+SELECT publName FROM publishers;
+SELECT publName FROM publishers LIMIT 2;
+SELECT publName FROM publishers LIMIT 1,2;
+SELECT SQL_CALC_FOUND_ROWS publName FROM publishers ORDER BY publName LIMIT 3;
+SELECT FOUND_ROWS();
+SELECT publName FROM publishers ORDER BY publName;
+SELECT publName FROM publishers ORDER BY publName DESC;
+SELECT authName FROM authors ORDER BY authName;
+SELECT authName FROM authors ORDER BY authName DESC;
+SELECT authName FROM authors WHERE authName>='M'
+SELECT authName FROM authors WHERE authName LIKE '%er%'
+SELECT authID,authName FROM authros WHERE authID IN(1,2,6);
+SELECT catName,title FROM titles,categories WHERE titles.catID=categories.catID ORDER BY catName,title;
+SELECT catName,COUNT(title) AS nrofItems FROM titles,categories WHERE titles.catID=categories.catID GROUP BY catname ORDER BY catname;
+UPDATE tablename SET mydata=0 ORDER BY name LIMIT 10;
+DELETE FROM tables WHERE titleID=8;
+DELETE FROM authors ORDER BY ts DESC LIMIT 10;
+DROP INDEX indexname NO tablename;
+SHOW INDEX FROM tablename;
+ALTER TABLE tablname ADD newcolname coltype coloptions;
+ALTER TABLE tblname CHANGE oldcolname newcolname coltype coloptions;
+ALTER TABLE tblname DROP colname;
+ALTER TABLE tblname ADD PRIMARY KEY()
+DROP TABLE tblname;
+DROP DATABASE dbname;
+SHOW CREATE TABLE;
+SHOW COLUMNS FROM mylibrary.titles;
+select column_name,ordinal_position,column_default,data_type,collation_name from information_schema.columns where table_schema="mylibrary" and table_name="titles";
+CREATE INDEX account_index on 'tablname'('account');
+1.
+drop procedure if exists pro_Employee;
+mysql> delimiter $$
+mysql> create procedure pro_Employee(in pdepid varchar(20),out pcount int)
+    -> reads  sql data
+    -> sql security invoker
+    -> begin
+    -> select count(id) into pcount from Employee where depid=pdepid;
+    -> end$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call pro_Employee(100,@pcount);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @pcount;
++---------+
+| @pcount |
++---------+
+|       1 |
++---------+
+1 row in set (0.00 sec)
+
+2.
+mysql> delimiter ;;
+mysql> create definer='root'@'localhost' procedure proc_adder(in a int ,in b int,out sum int)
+    -> begin
+    -> declare c int;
+    -> if a is null then set a=0;
+    -> end if;
+    -> if b is null then set b=0;
+    -> end if;
+    -> set sum=a+b;
+    -> end
+    -> ;;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> set @b=5;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call proc_adder(2,@b,@s);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @s;
++------+
+| @s   |
++------+
+|    7 |
++------+
+1 row in set (0.00 sec)
+
