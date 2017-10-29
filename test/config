@@ -1,0 +1,6 @@
+{
+	"user":	"user.conf",
+	"cmd":	"cmd.conf",
+	"pthread":	8,
+	"Bots":	"./bots/*.lua"
+}
